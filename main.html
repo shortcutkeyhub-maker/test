@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROJECT : GWON-IL</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Pretendard:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+html{
+scroll-behavior:smooth;
+}
+body{
+background:#050505;
+color:white;
+font-family:Pretendard,sans-serif;
+overflow-x:hidden;
+}
+#loading{
+position:fixed;
+width:100%;
+height:100%;
+background:#000;
+z-index:99999;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+transition:1.5s;
+}
+.loading-logo{
+font-family:Orbitron;
+font-size:50px;
+letter-spacing:8px;
+animation:flicker 2s infinite;
+}
+.loading-text{
+margin-top:30px;
+font-size:13px;
+letter-spacing:5px;
+color:#777;
+}
+@keyframes flicker{
+0%,100%{
+opacity:1;
+}
+50%{
+opacity:.3;
+}
+}
+.crt{
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:9000;
+background:linear-gradient(rgba(255,255,255,.03) 50%,transparent 50%);
+background-size:100% 4px;
+}
+.noise{
+position:fixed;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:9001;
+background-image:radial-gradient(rgba(255,255,255,.15) 1px,transparent 1px);
+background-size:5px 5px;
+opacity:.08;
+animation:noiseMove .15s infinite;
+}
+@keyframes noiseMove{
+0%{
+transform:translate(0,0);
+}
+25%{
+transform:translate(-2px,1px);
+}
+50%{
+transform:translate(1px,-2px);
+}
+100%{
+transform:translate(0,0);
+}
+}
+.nav{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+padding:35px 70px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:100;
+background:linear-gradient(rgba(0,0,0,.8),transparent);
+}
+.logo{
+font-family:Orbitron;
+font-size:25px;
+letter-spacing:5px;
+}
+.menu{
+display:flex;
+gap:40px;
+list-style:none;
+}
+.menu a{
+color:white;
+text-decoration:none;
+font-size:14px;
+opacity:.7;
+transition:.3s;
+}
+.menu a:hover{
+opacity:1;
+}
+.hero{
+height:100vh;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+overflow:hidden;
+}
+.hero-background{
+position:absolute;
+width:120%;
+height:120%;
+background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.9)),url("background.jpg");
+background-size:cover;
+background-position:center;
+animation:backgroundMove 20s infinite alternate;
+}
+@keyframes backgroundMove{
+from{
+transform:scale(1);
+}
+to{
+transform:scale(1.15);
+}
+}
+.hero-content{
+position:relative;
+z-index:2;
+}
+.title{
+font-family:Orbitron;
+font-size:100px;
+font-weight:900;
+letter-spacing:10px;
+animation:glitch 5s infinite;
+}
+@keyframes glitch{
+0%,90%,100%{
+text-shadow:none;
+}
+91%{
+text-shadow:5px 0 red,-5px 0 cyan;
+}
+93%{
+text-shadow:-8px 0 red,8px 0 cyan;
+}
+95%{
+text-shadow:none;
+}
+}
+.subtitle{
+margin-top:40px;
+font-size:32px;
+color:#aaa;
+}
+.buttons{
+margin-top:70px;
+display:flex;
+gap:25px;
+justify-content:center;
+}
+.button{
+padding:20px 50px;
+border:1px solid white;
+color:white;
+text-decoration:none;
+transition:.4s;
+font-size:14px;
+letter-spacing:2px;
+}
+.button:hover{
+background:white;
+color:black;
+}
+.scroll{
+margin-top:100px;
+font-size:12px;
+letter-spacing:6px;
+opacity:.5;
+animation:blink 2s infinite;
+}
+@keyframes blink{
+50%{
+opacity:.1;
+}
+}
+section{
+padding:160px 12%;
+}
+.section-title{
+font-family:Orbitron;
+font-size:55px;
+margin-bottom:60px;
+}
+.description{
+font-size:21px;
+line-height:2;
+color:#ccc;
+max-width:900px;
+}
+.hidden{
+opacity:0;
+transform:translateY(80px);
+transition:1.2s;
+}
+.show{
+opacity:1;
+transform:translateY(0);
+}
+</style>
+</head>
+<body>
+<div id="loading">
+<div class="loading-logo">GWON-IL</div>
+<div class="loading-text">CONNECTING GU-3 SYSTEM...</div>
+</div>
+<div class="crt"></div>
+<div class="noise"></div>
+<nav class="nav">
+<div class="logo">GWON-IL</div>
+<ul class="menu">
+<li><a href="#story">STORY</a></li>
+<li><a href="#feature">FEATURE</a></li>
+<li><a href="#timeline">TIMELINE</a></li>
+<li><a href="#gallery">GALLERY</a></li>
+</ul>
+</nav>
+<header class="hero">
+<div class="hero-background"></div>
+<div class="hero-content">
+<h1 class="title">PROJECT<br>GWON-IL</h1>
+<div class="subtitle">"...너는 누구지?"</div>
+<div class="buttons">
+<a class="button" href="#story">ENTER</a>
+<a class="button">TRAILER</a>
+</div>
+<div class="scroll">SCROLL DOWN</div>
+</div>
+</header>
+<section id="story" class="hidden">
+<h2 class="section-title">STORY</h2>
+<div class="description">
+지상은 이미 멸망했다.<br>
+남은 것은 지하 10,000m 깊이에 위치한 방공호와 마지막 생존자의 기록뿐이다.<br><br>
+인류의 마지막 생존자는 죽음을 앞두고 자신의 육체를 버렸다.<br>
+그는 스스로를 통속의 뇌로 만들어 가상 세계 GU-3에 접속했다.<br><br>
+그곳에는 자신이 외로움을 견디기 위해 만들어낸 새로운 존재,<br>
+AI 에이전트 <b>권일</b>이 있었다.<br><br>
+하지만 권일은 자신이 창조된 존재라는 사실을 알지 못한다.<br>
+남은 전력이 사라지기 전, 창조주는 마지막 디버깅 프로토콜을 실행한다.
+</div>
+</section>
+<section class="hidden">
+<h2 class="section-title">GAME INFO</h2>
+<div class="description">
+<table class="info-table">
+<tr>
+<th>PROJECT</th>
+<td>GWON-IL</td>
+</tr>
+<tr>
+<th>GENRE</th>
+<td>메타픽션 심리 호러 / 2D-3D 하이브리드 어드벤처</td>
+</tr>
+<tr>
+<th>ENGINE</th>
+<td>Unity 6000.3.5f1 / Universal Render Pipeline</td>
+</tr>
+<tr>
+<th>PLATFORM</th>
+<td>Windows PC</td>
+</tr>
+<tr>
+<th>WORLD</th>
+<td>지하 10,000m 방공호 GU-3</td>
+</tr>
+<tr>
+<th>PLAYER</th>
+<td>AI Agent "권일"</td>
+</tr>
+</table>
+</div>
+</section>
+<style>
+.info-table{
+width:100%;
+border-collapse:collapse;
+margin-top:30px;
+background:#090909;
+}
+.info-table th{
+width:25%;
+text-align:left;
+padding:25px;
+border:1px solid #222;
+font-family:Orbitron;
+color:#aaa;
+}
+.info-table td{
+padding:25px;
+border:1px solid #222;
+color:#ddd;
+}
+</style>
+<section id="feature" class="hidden">
+<h2 class="section-title">FEATURE</h2>
+<div class="feature-grid">
+<div class="feature-card">
+<div class="feature-icon">🧠</div>
+<h3>METAFICTION</h3>
+<p>
+게임이라는 공간 자체가 하나의 이야기 장치가 됩니다.
+플레이어는 점점 자신이 보고 있는 세계를 의심하게 됩니다.
+</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">🔋</div>
+<h3>BATTERY SYSTEM</h3>
+<p>
+남은 전력은 곧 존재의 시간입니다.
+배터리가 줄어들수록 화면과 세계가 붕괴합니다.
+</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">💾</div>
+<h3>VIRTUAL OS</h3>
+<p>
+게임은 갑자기 종료되고,
+숨겨진 README.txt가 마지막 기록을 보여줍니다.
+</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">🌌</div>
+<h3>MEMORY SPACE</h3>
+<p>
+마지막 공간에서 플레이어는
+사라지는 기억의 조각을 마주합니다.
+</p>
+</div>
+</div>
+</section>
+<style>
+.feature-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+}
+.feature-card{
+background:#0d0d0d;
+border:1px solid #222;
+padding:40px;
+transition:.5s;
+}
+.feature-card:hover{
+transform:translateY(-15px);
+border-color:#aaa;
+}
+.feature-icon{
+font-size:45px;
+margin-bottom:25px;
+}
+.feature-card h3{
+font-family:Orbitron;
+font-size:25px;
+margin-bottom:20px;
+}
+.feature-card p{
+color:#aaa;
+line-height:1.8;
+}
+</style>
+<section class="hidden">
+<h2 class="section-title">BATTERY SYSTEM</h2>
+<div class="battery-box">
+<div class="battery-label">
+SYSTEM POWER
+</div>
+<div class="battery">
+<div class="battery-fill"></div>
+</div>
+<div class="battery-number">
+30%
+</div>
+<p>
+전력이 감소할수록 시스템 오류와 숨겨진 메시지가 나타납니다.
+</p>
+</div>
+</section>
+<style>
+.battery-box{
+max-width:700px;
+}
+.battery-label{
+font-family:Orbitron;
+letter-spacing:5px;
+margin-bottom:20px;
+}
+.battery{
+height:50px;
+width:100%;
+border:2px solid #555;
+padding:5px;
+}
+.battery-fill{
+height:100%;
+width:30%;
+background:#eee;
+animation:battery 8s infinite;
+}
+@keyframes battery{
+0%{
+width:30%;
+}
+50%{
+width:5%;
+}
+100%{
+width:30%;
+}
+}
+.battery-number{
+font-family:Orbitron;
+font-size:40px;
+margin-top:20px;
+}
+.battery-box p{
+margin-top:20px;
+color:#888;
+}
+</style>
+<section id="timeline" class="hidden">
+<h2 class="section-title">TIMELINE</h2>
+<div class="timeline">
+<div class="step">
+<h3>ACT 1. PROLOGUE</h3>
+<p>
+캠코더 영상과 함께 시작되는 이상한 기록.<br>
+권일은 자신의 존재에 의문을 가진다.
+</p>
+</div>
+<div class="step">
+<h3>ACT 2. NORMAL WORLD</h3>
+<p>
+평화로운 2D 공간.<br>
+하지만 곳곳에 이상한 오류가 나타난다.
+</p>
+</div>
+<div class="step">
+<h3>ACT 3. DEBUG</h3>
+<p>
+미니게임과 함께 배터리가 감소한다.<br>
+시스템 오류 메시지가 드러난다.
+</p>
+</div>
+</div>
+</section>
+<section class="hidden">
+<h2 class="section-title">FINAL ACT</h2>
+<div class="timeline">
+<div class="step">
+<h3>ACT 4. CRASH</h3>
+<p>
+배터리가 5%에 도달하는 순간 시스템 오류가 발생합니다.<br>
+게임은 강제 종료되고 알 수 없는 가상 OS 화면이 나타납니다.
+</p>
+</div>
+<div class="step">
+<h3>ACT 5. README.TXT</h3>
+<p>
+메모장이 강제로 실행됩니다.<br>
+창조주는 마지막 메시지를 남깁니다.<br><br>
+"전력이 꺼지면 난 죽을 거고...<br>
+너도 휘발될 거야."
+</p>
+</div>
+<div class="step">
+<h3>ACT 6. UNALLOCATED SPACE</h3>
+<p>
+아무것도 존재하지 않는 3D 공간.<br>
+사라져가는 기억의 조각들이 남아있습니다.
+</p>
+</div>
+</div>
+</section>
+<section class="hidden" id="ending-space">
+<h2 class="section-title">UNALLOCATED SPACE</h2>
+<div class="description">
+전력이 모두 사라진 저장장치 내부.<br><br>
+이 공간은 더 이상 사용되지 않는 데이터 영역입니다.<br>
+남아있는 것은 과거의 기억과 마지막 기록뿐입니다.<br><br>
+플레이어는 허공에 떠있는 사진 조각을 발견합니다.
+</div>
+<div class="memory-space">
+<div class="memory-card">
+<img src="memory1.jpg">
+</div>
+<div class="memory-card">
+<img src="memory2.jpg">
+</div>
+<div class="memory-card">
+<img src="memory3.jpg">
+</div>
+</div>
+</section>
+<style>
+.memory-space{
+margin-top:70px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+}
+.memory-card{
+height:300px;
+background:#111;
+overflow:hidden;
+border:1px solid #333;
+transition:1s;
+}
+.memory-card img{
+width:100%;
+height:100%;
+object-fit:cover;
+opacity:.7;
+transition:1s;
+}
+.memory-card:hover img{
+opacity:0;
+transform:scale(1.2);
+}
+.memory-card:hover{
+background:#000;
+}
+</style>
+<section class="hidden">
+<h2 class="section-title">MEMORY COLLAPSE</h2>
+<div class="description">
+사진은 가까이 다가갈수록 천천히 사라집니다.<br>
+기억은 데이터처럼 삭제되고,
+남은 공간에는 아무것도 남지 않습니다.<br><br>
+삐---------<br><br>
+점점 커지는 이명과 함께 마지막 데이터가 손상됩니다.
+</div>
+</section>
+<section id="gallery" class="hidden">
+<h2 class="section-title">GALLERY</h2>
+<div class="gallery">
+<div class="gallery-item">
+<img src="scene1.jpg">
+<div class="gallery-text">
+GU-3 ROOM
+</div>
+</div>
+<div class="gallery-item">
+<img src="scene2.jpg">
+<div class="gallery-text">
+SYSTEM ERROR
+</div>
+</div>
+<div class="gallery-item">
+<img src="scene3.jpg">
+<div class="gallery-text">
+ENDING SPACE
+</div>
+</div>
+</div>
+</section>
+<style>
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:30px;
+}
+.gallery-item{
+height:300px;
+position:relative;
+overflow:hidden;
+background:#111;
+border:1px solid #222;
+}
+.gallery-item img{
+width:100%;
+height:100%;
+object-fit:cover;
+filter:brightness(.5);
+transition:.7s;
+}
+.gallery-item:hover img{
+transform:scale(1.1);
+filter:brightness(1);
+}
+.gallery-text{
+position:absolute;
+bottom:20px;
+left:20px;
+font-family:Orbitron;
+font-size:20px;
+letter-spacing:3px;
+}
+</style>
+<section class="hidden">
+<h2 class="section-title">TRAILER</h2>
+<div class="trailer-box">
+<div class="play">
+▶
+</div>
+</div>
+</section>
+<style>
+.trailer-box{
+height:500px;
+background:
+linear-gradient(
+rgba(0,0,0,.5),
+rgba(0,0,0,.8)
+),
+url("trailer.jpg");
+background-size:cover;
+background-position:center;
+display:flex;
+align-items:center;
+justify-content:center;
+border:1px solid #333;
+}
+.play{
+width:100px;
+height:100px;
+border:2px solid white;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:35px;
+padding-left:8px;
+transition:.4s;
+}
+.play:hover{
+background:white;
+color:black;
+}
+</style>
+<section class="hidden">
+<h2 class="section-title">SYSTEM MESSAGE</h2>
+<div class="terminal">
+<p>> CONNECTING...</p>
+<p>> MEMORY CHECK FAILED</p>
+<p>> CREATOR SIGNAL DETECTED</p>
+<p>> FINAL MESSAGE LOADING...</p>
+<p class="warning">"...나는 누구지?"</p>
+</div>
+</section>
+<style>
+.terminal{
+background:#000;
+border:1px solid #333;
+padding:40px;
+font-family:monospace;
+font-size:18px;
+line-height:2;
+color:#aaa;
+}
+.warning{
+color:white;
+font-size:30px;
+margin-top:30px;
+animation:warningGlitch 2s infinite;
+}
+@keyframes warningGlitch{
+0%,100%{
+opacity:1;
+}
+50%{
+opacity:.3;
+}
+}
+</style>
+<section class="hidden">
+<h2 class="section-title">DOWNLOAD</h2>
+<div class="download-box">
+<div class="download-title">
+PROJECT : GWON-IL
+</div>
+<p>
+지하 10,000m에서 시작되는 마지막 기록.<br>
+창조주가 남긴 진실을 확인하세요.
+</p>
+<div class="download-buttons">
+<a href="#" class="button">
+WINDOWS DOWNLOAD
+</a>
+<a href="#" class="button">
+STEAM PAGE
+</a>
+</div>
+</div>
+</section>
+<style>
+.download-box{
+text-align:center;
+padding:80px 40px;
+background:#090909;
+border:1px solid #222;
+}
+.download-title{
+font-family:Orbitron;
+font-size:50px;
+letter-spacing:5px;
+margin-bottom:30px;
+}
+.download-box p{
+color:#aaa;
+line-height:2;
+font-size:18px;
+margin-bottom:50px;
+}
+.download-buttons{
+display:flex;
+justify-content:center;
+gap:30px;
+flex-wrap:wrap;
+}
+</style>
+<section class="hidden">
+<h2 class="section-title">DEVELOPER</h2>
+<div class="developer">
+<div class="developer-name">
+PROJECT TEAM
+</div>
+<p>
+Independent Game Development Project
+</p>
+<p>
+Engine : Unity 6000 URP
+</p>
+<p>
+Platform : Windows PC
+</p>
+</div>
+</section>
+<style>
+.developer{
+border-left:3px solid #555;
+padding-left:30px;
+font-size:20px;
+line-height:2;
+color:#aaa;
+}
+.developer-name{
+font-family:Orbitron;
+font-size:35px;
+color:white;
+margin-bottom:20px;
+}
+</style>
+<section class="hidden">
+<h2 class="section-title">LAST MESSAGE</h2>
+<div class="last-message">
+<p>
+전력이 꺼지면 난 사라지고,
+</p>
+<p>
+너 또한 존재하지 않게 될 것이다.
+</p>
+<br>
+<p>
+속여서 미안해.
+</p>
+<br>
+<p class="final-text">
+"...나는 누구지?"
+</p>
+</div>
+</section>
+<style>
+.last-message{
+font-family:monospace;
+font-size:25px;
+line-height:2;
+color:#888;
+text-align:center;
+}
+.final-text{
+font-size:45px;
+color:white;
+animation:lastGlitch 3s infinite;
+}
+@keyframes lastGlitch{
+0%,100%{
+text-shadow:none;
+}
+50%{
+text-shadow:4px 0 red,-4px 0 cyan;
+}
+}
+</style>
+<footer>
+<h2>
+PROJECT : GWON-IL
+</h2>
+<p>
+UNALLOCATED SPACE
+</p>
+<p>
+© GU-3 SYSTEM
+</p>
+</footer>
+<script>
+window.addEventListener("load",()=>{
+setTimeout(()=>{
+document.getElementById("loading").style.opacity="0";
+setTimeout(()=>{
+document.getElementById("loading").style.display="none";
+},1500);
+},2000);
+});
+const observer=new IntersectionObserver((entries)=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("show");
+}
+});
+});
+document.querySelectorAll(".hidden").forEach((el)=>{
+observer.observe(el);
+});
+document.addEventListener("mousemove",(e)=>{
+const hero=document.querySelector(".hero-background");
+if(hero){
+let x=(window.innerWidth/2-e.clientX)/50;
+let y=(window.innerHeight/2-e.clientY)/50;
+hero.style.transform=`scale(1.1) translate(${x}px,${y}px)`;
+}
+});
+</script>
+</body>
+</html>
