@@ -1,0 +1,434 @@
+<!-- [dcb.html] -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discord Bot Management</title>
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --card-bg: #ffffff;
+      --border-color: #e4e4e7;
+      --text-main: #09090b;
+      --text-muted: #71717a;
+      --btn-bg: #09090b;
+      --btn-hover: #27272a;
+      --status-on-bg: #f0fdf4;
+      --status-on-text: #166534;
+      --status-on-border: #bbf7d0;
+      --status-off-bg: #fef2f2;
+      --status-off-text: #991b1b;
+      --status-off-border: #fecaca;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      padding: 24px 32px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 상단 헤더 영역 (로고) */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .logo-img {
+      height: 38px;
+      object-fit: contain;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .page-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .btn {
+      background-color: var(--btn-bg);
+      color: #ffffff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn:hover {
+      background-color: var(--btn-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background-color: #f4f4f5;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background-color: #e4e4e7;
+    }
+
+    /* 봇 카드리스트 */
+    .bot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .bot-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 22px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .bot-card:hover {
+      border-color: #a1a1aa;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      transform: translateY(-2px);
+    }
+
+    .bot-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .bot-card-id {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .badge-on {
+      background-color: var(--status-on-bg);
+      color: var(--status-on-text);
+      border: 1px solid var(--status-on-border);
+    }
+
+    .badge-off {
+      background-color: var(--status-off-bg);
+      color: var(--status-off-text);
+      border: 1px solid var(--status-off-border);
+    }
+
+    /* 공지사항 배너 */
+    .notice-banner {
+      background-color: #fefce8;
+      color: #854d0e;
+      border: 1px solid #fef08a;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin-bottom: 24px;
+      display: none;
+    }
+
+    /* 상세 관제 뷰 */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0 28px 0;
+    }
+
+    .metric-card {
+      background-color: #fafafa;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .metric-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* 터미널 출력 창 */
+    .terminal-box {
+      background-color: #18181b;
+      color: #f4f4f5;
+      border-radius: 12px;
+      padding: 18px;
+      height: 380px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85rem;
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+
+    .terminal-line {
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* PIN 인증 모달 */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 32px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    }
+
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .modal-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .pin-input {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.4rem;
+      text-align: center;
+      letter-spacing: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      outline: none;
+      background: #fafafa;
+    }
+
+    .pin-input:focus {
+      border-color: #09090b;
+      background: #ffffff;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .modal-actions .btn {
+      flex: 1;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 로고 (wony_logo.png) -->
+  <div class="top-nav">
+    <img src="wony_logo.png" alt="wony_logo" class="logo-img">
+  </div>
+
+  <div class="container">
+    <!-- 메인 봇 목록 뷰 -->
+    <div id="listView">
+      <div class="page-header">
+        <h1 class="page-title">봇 목록</h1>
+        <button class="btn btn-secondary" onclick="loadBots()">새로고침</button>
+      </div>
+      <div id="botGrid" class="bot-grid"></div>
+    </div>
+
+    <!-- 상세 대시보드 뷰 -->
+    <div id="dashView" style="display: none;">
+      <div style="margin-bottom: 20px;">
+        <button class="btn btn-secondary" onclick="goBack()">← 목록으로 돌아가기</button>
+      </div>
+
+      <div id="dashNotice" class="notice-banner"></div>
+
+      <div class="page-header" style="margin-bottom: 0;">
+        <h1 id="dashTitle" class="page-title">Bot Name</h1>
+        <span id="dashBadge" class="badge"></span>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">CPU 사용률</div>
+          <div id="dashCpu" class="metric-value">0%</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">RAM 사용량</div>
+          <div id="dashRam" class="metric-value">0 MB</div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 12px;">터미널 출력</h3>
+      <div id="terminal" class="terminal-box"></div>
+    </div>
+  </div>
+
+  <!-- PIN 인증 모달 -->
+  <div id="pinModal" class="modal-overlay">
+    <div class="modal-card">
+      <h3 class="modal-title">접속 인증</h3>
+      <p class="modal-desc">4자리 PIN 번호를 입력하세요.</p>
+      <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="••••">
+      <div class="modal-actions">
+        <button class="btn" onclick="verifyPin()">확인</button>
+        <button class="btn btn-secondary" onclick="closeModal()">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Google Apps Script 웹 앱 URL을 지정하세요.
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwuiQp7a1dXsCVdFIMWWhUS49CY0K34DAiEhOlejxOF01visXHMFj1bbzMxmzcZugD0Hg/exec"; 
+    let curId = null, curPin = "", timer = null;
+
+    function loadBots() {
+      fetch(GAS_URL + "?action=listBots")
+        .then(r => r.json())
+        .then(r => {
+          const grid = document.getElementById("botGrid");
+          if (!r.bots || r.bots.length === 0) {
+            grid.innerHTML = `<div style="color: var(--text-muted); grid-column: 1/-1;">등록된 봇이 없습니다.</div>`;
+            return;
+          }
+          grid.innerHTML = r.bots.map(b => {
+            const isOnline = b.status === 'Running' || b.status === 'Online';
+            return `
+              <div class="bot-card" onclick="openModal('${b.id}')">
+                <div class="bot-card-title">${b.name}</div>
+                <div class="bot-card-id">ID: ${b.id}</div>
+                <span class="badge ${isOnline ? 'badge-on' : 'badge-off'}">${isOnline ? 'ONLINE' : 'OFFLINE'}</span>
+              </div>
+            `;
+          }).join('');
+        })
+        .catch(err => console.error("봇 목록 불러오기 실패:", err));
+    }
+
+    function openModal(id) { 
+      curId = id; 
+      document.getElementById("pinInput").value = "";
+      document.getElementById("pinModal").style.display = "flex"; 
+      document.getElementById("pinInput").focus();
+    }
+
+    function closeModal() { 
+      document.getElementById("pinModal").style.display = "none"; 
+    }
+
+    function verifyPin() {
+      curPin = document.getElementById("pinInput").value;
+      if (curPin.length !== 4) return;
+      fetchData(true);
+    }
+
+    function fetchData(isInit = false) {
+      if (!curId || !curPin) return;
+      fetch(`${GAS_URL}?action=getBotData&bot_id=${encodeURIComponent(curId)}&pin=${encodeURIComponent(curPin)}`)
+        .then(r => r.json())
+        .then(r => {
+          if (!r.authenticated) { 
+            if (isInit) alert(r.msg || "PIN 번호가 일치하지 않습니다."); 
+            return; 
+          }
+          if (isInit) { 
+            closeModal(); 
+            document.getElementById("listView").style.display = "none"; 
+            document.getElementById("dashView").style.display = "block"; 
+            if (timer) clearInterval(timer);
+            timer = setInterval(fetchData, 4000); 
+          }
+          
+          let d = r.data;
+          document.getElementById("dashTitle").innerText = d.name;
+          const isOnline = d.status === 'Running' || d.status === 'Online';
+          const badge = document.getElementById("dashBadge");
+          badge.className = `badge ${isOnline ? 'badge-on' : 'badge-off'}`;
+          badge.innerText = isOnline ? 'ONLINE' : 'OFFLINE';
+          
+          document.getElementById("dashCpu").innerText = d.cpu + "%";
+          document.getElementById("dashRam").innerText = d.ram + " MB";
+          
+          const noticeDiv = document.getElementById("dashNotice");
+          if (d.announcement && d.announcement.trim() !== "") {
+            noticeDiv.style.display = "block";
+            noticeDiv.innerText = "📢 " + d.announcement;
+          } else {
+            noticeDiv.style.display = "none";
+          }
+
+          const term = document.getElementById("terminal");
+          term.innerHTML = d.logs.map(l => `<div class="terminal-line">${l}</div>`).join('');
+          term.scrollTop = term.scrollHeight;
+        });
+    }
+
+    function goBack() {
+      if (timer) clearInterval(timer); 
+      curPin = ""; 
+      curId = null;
+      document.getElementById("dashView").style.display = "none";
+      document.getElementById("listView").style.display = "block";
+      loadBots();
+    }
+    
+    window.onload = loadBots;
+  </script>
+</body>
+</html>
